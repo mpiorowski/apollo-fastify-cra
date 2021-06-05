@@ -1,4 +1,4 @@
-/prod/docker-compose.prod.yml
+build
 yarn.lock
 
 # Logs

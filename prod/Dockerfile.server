@@ -1,0 +1,18 @@
+# Stage 1 - Create a builder container
+FROM node:16.2-alpine
+
+WORKDIR /usr/app
+COPY ./@types ./@types
+WORKDIR /usr/app/server
+
+COPY ./server/package.json ./package.json
+
+RUN yarn install --production
+
+COPY ./server/tsconfig.json ./tsconfig.json
+COPY ./server/.env ./.env
+COPY ./server/src ./src
+
+RUN yarn run tsc
+
+USER node

@@ -1,0 +1,16 @@
+{
+  "name": "db",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "db-migrate": "^0.11.12",
+    "db-migrate-pg": "^1.2.2"
+  },
+  "scripts": {
+    "create": "db-migrate create -e pg",
+    "migrate": "db-migrate up -e pg",
+    "reset": "db-migrate reset -e pg",
+    "start": "docker-compose -f docker-compose.db.yml up"
+  }
+}
