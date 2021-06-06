@@ -76,79 +76,83 @@ export const App: React.FC = () => {
   return (
     <Grid gridTemplateColumns="60px 1fr" h="100vh">
       <Box backgroundColor="gray.900">
-        <Tooltip label="Home" aria-label="home-tooltip" placement="right" shouldWrapChildren>
-          <Link to="/" aria-label="home">
-            <Center
-              h="40px"
-              _hover={{ color: "gray.400", cursor: "pointer" }}
-              m="2"
-              borderRadius="4"
-              backgroundColor={activeUrl === "" ? "gray.600" : ""}
-            >
-              <FontAwesomeIcon icon={faHome} size="lg" />
-            </Center>
-          </Link>
-        </Tooltip>
-        <Tooltip label="Forum" aria-label="forum-tooltip" placement="right" shouldWrapChildren>
-          <Link to="/forum/categories" aria-label="forum">
-            <Center
-              h="40px"
-              _hover={{ color: "gray.400", cursor: "pointer" }}
-              m="2"
-              borderRadius="4"
-              backgroundColor={activeUrl === "forum" ? "gray.600" : ""}
-            >
-              <FontAwesomeIcon icon={faComments} size="lg" />
-            </Center>
-          </Link>
-        </Tooltip>
-        <Tooltip label="Chat" aria-label="chat-tooltip" placement="right" shouldWrapChildren>
-          <Link to="/chat" aria-label="chat">
-            <Center
-              h="40px"
-              _hover={{ color: "gray.400", cursor: "pointer" }}
-              m="2"
-              borderRadius="4"
-              backgroundColor={activeUrl === "chat" ? "gray.600" : ""}
-            >
-              <FontAwesomeIcon icon={faHeadset} size="lg" />
-            </Center>
-          </Link>
-        </Tooltip>
+        <nav>
+          <Tooltip label="Home" aria-label="home-tooltip" placement="right" shouldWrapChildren>
+            <Link to="/" aria-label="home">
+              <Center
+                h="40px"
+                _hover={{ color: "gray.400", cursor: "pointer" }}
+                m="2"
+                borderRadius="4"
+                backgroundColor={activeUrl === "" ? "gray.600" : ""}
+              >
+                <FontAwesomeIcon icon={faHome} size="lg" />
+              </Center>
+            </Link>
+          </Tooltip>
+          <Tooltip label="Forum" aria-label="forum-tooltip" placement="right" shouldWrapChildren>
+            <Link to="/forum/categories" aria-label="forum">
+              <Center
+                h="40px"
+                _hover={{ color: "gray.400", cursor: "pointer" }}
+                m="2"
+                borderRadius="4"
+                backgroundColor={activeUrl === "forum" ? "gray.600" : ""}
+              >
+                <FontAwesomeIcon icon={faComments} size="lg" />
+              </Center>
+            </Link>
+          </Tooltip>
+          <Tooltip label="Chat" aria-label="chat-tooltip" placement="right" shouldWrapChildren>
+            <Link to="/chat" aria-label="chat">
+              <Center
+                h="40px"
+                _hover={{ color: "gray.400", cursor: "pointer" }}
+                m="2"
+                borderRadius="4"
+                backgroundColor={activeUrl === "chat" ? "gray.600" : ""}
+              >
+                <FontAwesomeIcon icon={faHeadset} size="lg" />
+              </Center>
+            </Link>
+          </Tooltip>
 
-        <Tooltip label="Logout" aria-label="logout-tooltip" placement="right" shouldWrapChildren>
-          <Center
-            h="40px"
-            _hover={{ color: "gray.400", cursor: "pointer" }}
-            m="2"
-            borderRadius="4"
-            onClick={handleLogout}
-          >
-            <FontAwesomeIcon icon={faSignOutAlt} size="lg" />
-          </Center>
-        </Tooltip>
+          <Tooltip label="Logout" aria-label="logout-tooltip" placement="right" shouldWrapChildren>
+            <Center
+              h="40px"
+              _hover={{ color: "gray.400", cursor: "pointer" }}
+              m="2"
+              borderRadius="4"
+              onClick={handleLogout}
+            >
+              <FontAwesomeIcon icon={faSignOutAlt} size="lg" />
+            </Center>
+          </Tooltip>
+        </nav>
       </Box>
       <Box>
-        <Switch>
-          <Route exact path="/">
-            <HomePage />
-          </Route>
-          <Route exact path="/forum/categories">
-            <CategoriesPage />
-          </Route>
-          <Route exact path="/forum/categories/:categoryId/topics">
-            <TopicsPage />
-          </Route>
-          <Route exact path="/forum/categories/:categoryId/topics/:topicId/posts">
-            <PostsPage />
-          </Route>
-          <Route path="/chat">
-            <ChatPage />
-          </Route>
-          <Route path="*">
-            <Redirect to="/" />
-          </Route>
-        </Switch>
+        <main>
+          <Switch>
+            <Route exact path="/">
+              <HomePage />
+            </Route>
+            <Route exact path="/forum/categories">
+              <CategoriesPage />
+            </Route>
+            <Route exact path="/forum/categories/:categoryId/topics">
+              <TopicsPage />
+            </Route>
+            <Route exact path="/forum/categories/:categoryId/topics/:topicId/posts">
+              <PostsPage />
+            </Route>
+            <Route path="/chat">
+              <ChatPage />
+            </Route>
+            <Route path="*">
+              <Redirect to="/" />
+            </Route>
+          </Switch>
+        </main>
       </Box>
     </Grid>
   );
