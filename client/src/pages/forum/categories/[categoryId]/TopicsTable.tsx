@@ -2,21 +2,28 @@ import { ArrowUpDownIcon, TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/ic
 import { Button, chakra, Table, TableCaption, Tbody, Td, Tfoot, Th, Thead, Tr } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Column, ColumnInstance, useSortBy, useTable } from "react-table";
+import { Column, useSortBy, useTable } from "react-table";
 import { Category } from "../../../../../../@types/forum.types";
 
-type ColumnData = {
-  Header: string;
-  accessor: string;
-  isNumeric: boolean;
-};
+// type ColumnData = {
+//   Header: string;
+//   accessor: string;
+//   isNumeric: boolean;
+// };
 
 type Props = {
   category: Category | null;
 };
 
+type TableData = {
+  id: string;
+  title: string;
+  description: string;
+  postsCount: number;
+};
+
 export default function TopicsTable({ category }: Props): JSX.Element {
-  const columns = React.useMemo<Column[]>(
+  const columns = React.useMemo<Column<TableData>[]>(
     () => [
       {
         Header: "Tytuł",
@@ -50,13 +57,13 @@ export default function TopicsTable({ category }: Props): JSX.Element {
         count++;
         count = count + post.replies.length;
       });
-      return { id: topic.id, title: topic.title, description: topic.description, postsCount: count };
+      return { id: topic.id as string, title: topic.title, description: topic.description || "", postsCount: count };
     });
 
     return topicsWithPostsCount;
   }, [category]);
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable<TableData>(
     { columns, data: tableData },
     useSortBy,
   );
@@ -93,7 +100,7 @@ export default function TopicsTable({ category }: Props): JSX.Element {
           return (
             <Tr {...row.getRowProps()}>
               {row.cells.map((cell) => {
-                const column = cell.column as ColumnInstance & ColumnData;
+                const column = cell.column as any;
                 return (
                   <Td {...cell.getCellProps()} isNumeric={column.isNumeric}>
                     {cell.render("Cell")}
