@@ -15,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useQueryClient } from "react-query";
 import { Topic } from "../../../../../../@types/forum.types";
 import { handleError } from "../../../../@common/@handleError";
 import { useAddTopic } from "../../@common/topics.api";
@@ -24,11 +23,10 @@ interface Props {
   categoryId: string;
   isOpen: boolean;
   onClose: () => void;
-  btnRef: React.MutableRefObject<undefined>;
+  btnRef: React.MutableRefObject<HTMLButtonElement | null>;
 }
 
 export const TopicDrawer: React.FC<Props> = ({ categoryId, btnRef, isOpen, onClose }: Props) => {
-  const cache = useQueryClient();
   const {
     handleSubmit,
     register,
@@ -43,7 +41,6 @@ export const TopicDrawer: React.FC<Props> = ({ categoryId, btnRef, isOpen, onClo
       if (response?.error) {
         throw response.error;
       }
-      cache.refetchQueries(["category", categoryId]);
       onClose();
     } catch (error) {
       handleError(error);
@@ -61,16 +58,16 @@ export const TopicDrawer: React.FC<Props> = ({ categoryId, btnRef, isOpen, onClo
             <DrawerHeader>Dodaj temat</DrawerHeader>
 
             <DrawerBody>
-              <FormControl isInvalid={errors.title} h="120">
+              <FormControl isInvalid={errors["title"]} h="120">
                 <FormLabel htmlFor="title">Tytuł</FormLabel>
                 <Input
                   title="title"
                   placeholder="Tytuł"
                   {...register("title", { required: "Pole nie może być puste" })}
                 />
-                <FormErrorMessage>{errors.title && errors.title.message}</FormErrorMessage>
+                <FormErrorMessage>{errors["title"] && errors["title"].message}</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={errors.description} h="120">
+              <FormControl isInvalid={errors["description"]} h="120">
                 <FormLabel htmlFor="description">Opis</FormLabel>
                 <Textarea
                   description="description"
@@ -78,7 +75,7 @@ export const TopicDrawer: React.FC<Props> = ({ categoryId, btnRef, isOpen, onClo
                   placeholder="Tytuł"
                   {...register("description", { required: "Pole nie może być puste" })}
                 />
-                <FormErrorMessage>{errors.description && errors.description.message}</FormErrorMessage>
+                <FormErrorMessage>{errors["description"] && errors["description"].message}</FormErrorMessage>
               </FormControl>
             </DrawerBody>
 

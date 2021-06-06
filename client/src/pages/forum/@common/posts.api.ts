@@ -1,8 +1,8 @@
 import { gql, useMutation } from "urql";
 import { Post } from "../../../../../@types/forum.types";
-import { GraphqlResponse } from "../../../@common/@types";
+import { GraphqlMutation } from "../../../@common/@types";
 
-export const useAddPost = (): GraphqlResponse<Post> => {
+export const useAddPost = (): GraphqlMutation<Post> => {
   const query = gql`
     mutation ($topicId: String!, $content: String!, $replyId: String) {
       createPost(topicId: $topicId, content: $content, replyId: $replyId) {

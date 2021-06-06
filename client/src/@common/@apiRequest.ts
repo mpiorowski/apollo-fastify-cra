@@ -1,5 +1,3 @@
-import { handleError } from "./@handleError";
-
 interface Options {
   url: string;
   method: "POST" | "GET" | "PUT" | "PATCH";
@@ -13,9 +11,10 @@ export const apiRequest = async <T>(options: Options): Promise<T> => {
   options = { ...defaults, ...options };
   const response = await fetch(`/api${options.url}`, options);
   if (!response.ok) {
-    const data = await response.json();
-    handleError(data.errors);
-    return;
+    // TODO - error handler
+    // const data = await response.json();
+    // handleError(data);
+    return {} as T;
   }
   if (response.status === 204) {
     return {} as T;

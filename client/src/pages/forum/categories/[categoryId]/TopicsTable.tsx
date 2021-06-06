@@ -1,8 +1,8 @@
 import { ArrowUpDownIcon, TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
-import { chakra, Link as UiLink, Table, TableCaption, Tbody, Td, Tfoot, Th, Thead, Tr } from "@chakra-ui/react";
-import Link from "next/link";
+import { Button, chakra, Table, TableCaption, Tbody, Td, Tfoot, Th, Thead, Tr } from "@chakra-ui/react";
 import React from "react";
-import { ColumnInstance, HeaderGroup, useSortBy, useTable } from "react-table";
+import { Link } from "react-router-dom";
+import { Column, ColumnInstance, useSortBy, useTable } from "react-table";
 import { Category } from "../../../../../../@types/forum.types";
 
 type ColumnData = {
@@ -12,18 +12,20 @@ type ColumnData = {
 };
 
 type Props = {
-  category: Category;
+  category: Category | null;
 };
 
 export default function TopicsTable({ category }: Props): JSX.Element {
-  const columns = React.useMemo(
+  const columns = React.useMemo<Column[]>(
     () => [
       {
         Header: "Tytuł",
         accessor: "title",
-        Cell: ({ row }) => (
-          <Link href={`/forum/categories/${category.id}/topics/${row.original.id}/posts`}>
-            <UiLink color="green.400">{row.original.title}</UiLink>
+        Cell: ({ row }: { row: any }) => (
+          <Link to={`/forum/categories/${category?.id}/topics/${row.original.id}/posts`}>
+            <Button variant="link" color="green.400">
+              {row.original.title}
+            </Button>
           </Link>
         ),
       },
@@ -44,15 +46,16 @@ export default function TopicsTable({ category }: Props): JSX.Element {
 
     const topicsWithPostsCount = topics.map((topic) => {
       let count = 0;
-      topic.posts.forEach((post) => {
+      topic.posts?.forEach((post) => {
         count++;
         count = count + post.replies.length;
       });
-      return { ...topic, postsCount: count };
+      return { id: topic.id, title: topic.title, description: topic.description, postsCount: count };
     });
 
     return topicsWithPostsCount;
   }, [category]);
+
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
     { columns, data: tableData },
     useSortBy,
@@ -64,7 +67,8 @@ export default function TopicsTable({ category }: Props): JSX.Element {
       <Thead>
         {headerGroups.map((headerGroup) => (
           <Tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column: HeaderGroup & ColumnData) => (
+            {/* FIXME - any */}
+            {headerGroup.headers.map((column: any) => (
               <Th {...column.getHeaderProps(column.getSortByToggleProps())} isNumeric={column.isNumeric}>
                 {column.render("Header")}
                 <chakra.span pl="4">

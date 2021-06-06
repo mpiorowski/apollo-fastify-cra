@@ -14,14 +14,13 @@ import {
   Textarea,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Chat } from "../../../../@types/chat.types";
 import { handleError } from "../../@common/@handleError";
-import { Pages } from "../Pages";
-import { useAddChat, useChatSubscription } from "./@common/chat.api";
+import { useAddChat, useChatSubscription } from "./chat.api";
 
-const ChatPage = (): ReactElement => {
+export const ChatPage: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [chatList, setChatList] = useState<Chat[]>([]);
@@ -37,7 +36,7 @@ const ChatPage = (): ReactElement => {
   // subscription
   const { res } = useChatSubscription();
   useEffect(() => {
-    res.data?.newestChat && setChatList([res.data.newestChat].concat(chatList));
+    res.data?.newestChat && setChatList((currentChat) => [res.data.newestChat].concat(currentChat));
   }, [res.data]);
   // add chat mutation
   const addChat = useAddChat();
@@ -56,7 +55,7 @@ const ChatPage = (): ReactElement => {
   };
 
   return (
-    <Pages>
+    <>
       <Grid
         width="80%"
         margin="auto"
@@ -88,13 +87,13 @@ const ChatPage = (): ReactElement => {
               <ModalHeader>Dodaj wpis</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                <FormControl isInvalid={errors.content} h="120">
+                <FormControl isInvalid={errors["content"]} h="120">
                   <Textarea
                     content="content"
                     placeholder="Wpis"
                     {...register("content", { required: "Pole nie może być puste" })}
                   />
-                  <FormErrorMessage>{errors.content && errors.content.message}</FormErrorMessage>
+                  <FormErrorMessage>{errors["content"] && errors["content"].message}</FormErrorMessage>
                 </FormControl>
               </ModalBody>
 
@@ -121,7 +120,7 @@ const ChatPage = (): ReactElement => {
             Save
           </Button>
         </Flex> */}
-    </Pages>
+    </>
   );
 };
 

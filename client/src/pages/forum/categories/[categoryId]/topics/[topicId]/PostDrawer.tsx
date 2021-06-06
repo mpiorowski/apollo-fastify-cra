@@ -14,7 +14,6 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useQueryClient } from "react-query";
 import { Post } from "../../../../../../../../@types/forum.types";
 import { handleError } from "../../../../../../@common/@handleError";
 import { useAddPost } from "../../../../@common/posts.api";
@@ -23,12 +22,11 @@ interface Props {
   topicId: string;
   isOpen: boolean;
   onClose: () => void;
-  btnRef: React.MutableRefObject<undefined>;
-  replyId: string | null;
+  btnRef: React.MutableRefObject<HTMLButtonElement | null>;
+  replyId?: string;
 }
 
 export const PostDrawer: React.FC<Props> = ({ topicId, btnRef, isOpen, onClose, replyId }: Props) => {
-  const cache = useQueryClient();
   const {
     handleSubmit,
     register,
@@ -40,17 +38,16 @@ export const PostDrawer: React.FC<Props> = ({ topicId, btnRef, isOpen, onClose, 
     return () => {
       reset();
     };
-  }, [isOpen]);
+  }, [isOpen, reset]);
 
   const addPost = useAddPost();
   const onSubmit = async (values: Post) => {
     try {
-      const request = { ...values, topicId: topicId, replyId: replyId || null };
+      const request = { ...values, topicId, replyId };
       const response = await addPost.mutate(request);
       if (response?.error) {
         throw response.error;
       }
-      cache.refetchQueries(["topic", topicId]);
       onClose();
     } catch (error) {
       console.error(error);
@@ -76,7 +73,7 @@ export const PostDrawer: React.FC<Props> = ({ topicId, btnRef, isOpen, onClose, 
             <DrawerCloseButton />
             <DrawerHeader>Dodaj post</DrawerHeader>
             <DrawerBody>
-              <FormControl isInvalid={errors.content} h="120">
+              <FormControl isInvalid={errors["content"]} h="120">
                 <FormLabel htmlFor="content">Treść</FormLabel>
                 <Textarea
                   rows={4}
@@ -84,7 +81,7 @@ export const PostDrawer: React.FC<Props> = ({ topicId, btnRef, isOpen, onClose, 
                   placeholder="Treść"
                   {...register("content", { required: "Pole nie może być puste" })}
                 />
-                <FormErrorMessage>{errors.content && errors.content.message}</FormErrorMessage>
+                <FormErrorMessage>{errors["content"] && errors["content"].message}</FormErrorMessage>
               </FormControl>
             </DrawerBody>
             <DrawerFooter>

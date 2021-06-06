@@ -1,20 +1,19 @@
-import { Box, Button, Flex, Grid, Link as UiLink, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, useDisclosure } from "@chakra-ui/react";
 import { faComments, faPenAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
-import React, { Fragment } from "react";
-import { Pages } from "../Pages";
+import React, { Fragment, useRef } from "react";
+import { Link } from "react-router-dom";
 import { useFindAllCategories } from "./@common/categories.api";
 import { CategoryDrawer } from "./CategoryDrawer";
 
-export default function Categories(): JSX.Element {
+export const CategoriesPage: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = React.useRef();
+  const btnRef = useRef<HTMLButtonElement>(null);
 
-  const { fetching, error, response } = useFindAllCategories();
+  const { response } = useFindAllCategories();
 
   return (
-    <Pages>
+    <>
       <CategoryDrawer btnRef={btnRef} isOpen={isOpen} onClose={onClose} />
       <Flex justifyContent="right" p="5">
         <Button ref={btnRef} onClick={onOpen} w="200px">
@@ -35,10 +34,10 @@ export default function Categories(): JSX.Element {
         {response.map((category) => (
           <Fragment key={category.id}>
             <Grid h="100px" background="gray.800" alignContent="center">
-              <Link href={`/forum/categories/${category.id}/topics`}>
-                <UiLink fontSize="xl" color="green.400">
+              <Link to={`/forum/categories/${category.id}/topics`}>
+                <Button variant="link" fontSize="xl" color="green.400">
                   {category.title}
-                </UiLink>
+                </Button>
               </Link>
               <Box fontSize="sm" color="gray.300">
                 {category.description}
@@ -90,6 +89,6 @@ export default function Categories(): JSX.Element {
         </Box>
         {activeCategory && <TopicsTable category={activeCategory}></TopicsTable>}
       </Grid> */}
-    </Pages>
+    </>
   );
-}
+};

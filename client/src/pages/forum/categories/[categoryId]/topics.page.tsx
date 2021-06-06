@@ -1,22 +1,21 @@
 import { Button, Flex, useDisclosure } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import React from "react";
-import { Pages } from "../../../Pages";
+import { useParams } from "react-router";
 import { useFindCategoryById } from "../../@common/categories.api";
 import { TopicDrawer } from "./TopicDrawer";
 import TopicsTable from "./TopicsTable";
 
-export const Topics: React.FC = () => {
-  const router = useRouter();
-  const { categoryId } = router.query;
+export const TopicsPage: React.FC = () => {
+  const { categoryId } = useParams<{ categoryId: string }>();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = React.useRef();
+  const btnRef = React.useRef(null);
 
   const { response } = useFindCategoryById(categoryId as string);
+  console.log(response);
 
   return (
-    <Pages>
+    <>
       <TopicDrawer categoryId={categoryId as string} btnRef={btnRef} isOpen={isOpen} onClose={onClose} />
       <Flex justifyContent="right" p="5">
         <Button ref={btnRef} onClick={onOpen} w="200px">
@@ -24,8 +23,6 @@ export const Topics: React.FC = () => {
         </Button>
       </Flex>
       <TopicsTable category={response} />
-    </Pages>
+    </>
   );
 };
-
-export default Topics;

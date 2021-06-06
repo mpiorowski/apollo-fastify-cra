@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { gql, useMutation, useQuery } from "urql";
 import { Category } from "../../../../../@types/forum.types";
-import { GraphqlResponse } from "../../../@common/@types";
+import { GraphqlMutation, GraphqlQuery } from "../../../@common/@types";
 
-export function useFindAllCategories(): GraphqlResponse<Category[]> {
+export function useFindAllCategories(): GraphqlQuery<Category[]> {
   const query = gql`
     query {
       categories {
@@ -17,13 +17,14 @@ export function useFindAllCategories(): GraphqlResponse<Category[]> {
       }
     }
   `;
-  const [result, reexecuteQuery] = useQuery({ query });
+  const context = useMemo(() => ({ additionalTypenames: ["Category"] }), []);
+  const [result, reexecuteQuery] = useQuery({ query, context });
   const { data, fetching, error } = result;
   const response = data?.categories || [];
   return { response, fetching, error, reexecuteQuery };
 }
 
-export function useFindCategoryById(categoryId: string): GraphqlResponse<Category | null> {
+export function useFindCategoryById(categoryId: string): GraphqlQuery<Category | null> {
   const query = gql`
     query Category($categoryId: String!) {
       category(id: $categoryId) {
@@ -51,7 +52,7 @@ export function useFindCategoryById(categoryId: string): GraphqlResponse<Categor
   return { response, fetching, error, reexecuteQuery };
 }
 
-export const useAddCategory = (): GraphqlResponse<Category> => {
+export const useAddCategory = (): GraphqlMutation<Category> => {
   const query = gql`
     mutation CreateCategory($title: String, $description: String) {
       createCategory(title: $title, description: $description) {

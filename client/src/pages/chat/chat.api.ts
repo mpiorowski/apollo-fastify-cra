@@ -1,6 +1,6 @@
 import { gql, useMutation, useSubscription, UseSubscriptionState } from "urql";
-import { Chat } from "../../../../../@types/chat.types";
-import { GraphqlResponse } from "../../../@common/@types";
+import { Chat } from "../../../../@types/chat.types";
+import { GraphqlMutation } from "../../@common/@types";
 
 export function useChatSubscription(): {
   res: UseSubscriptionState;
@@ -18,7 +18,7 @@ export function useChatSubscription(): {
   return { res };
 }
 
-export const useAddChat = (): GraphqlResponse<Chat> => {
+export const useAddChat = (): GraphqlMutation<Chat> => {
   const query = gql`
     mutation ($content: String!) {
       createChat(content: $content) {

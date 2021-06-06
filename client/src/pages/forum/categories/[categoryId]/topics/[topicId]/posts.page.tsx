@@ -1,30 +1,28 @@
 import { Button, Flex, Grid, useDisclosure } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { Pages } from "../../../../../Pages";
+import { useParams } from "react-router-dom";
 import { useFindTopicById } from "../../../../@common/topics.api";
-import PostContent from "./PostContent";
+import { PostContent } from "./PostContent";
 import { PostDrawer } from "./PostDrawer";
 
-export const Posts: React.FC = () => {
-  const router = useRouter();
-  const { topicId } = router.query;
+export const PostsPage: React.FC = () => {
+  const { topicId } = useParams<{ topicId: string }>();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = React.useRef();
+  const btnRef = React.useRef(null);
 
-  const [replyId, setReplyId] = useState<string | null>(null);
+  const [replyId, setReplyId] = useState<string>();
 
   const { response } = useFindTopicById(topicId as string);
 
   return (
-    <Pages>
+    <>
       <PostDrawer topicId={topicId as string} btnRef={btnRef} isOpen={isOpen} onClose={onClose} replyId={replyId} />
       <Flex justifyContent="right" p="5">
         <Button
           ref={btnRef}
           onClick={() => {
-            setReplyId(null);
+            setReplyId(undefined);
             onOpen();
           }}
           w="200px"
@@ -42,11 +40,9 @@ export const Posts: React.FC = () => {
         paddingBottom="0.5"
       >
         {response?.posts?.map((post) => (
-          <PostContent post={post} onOpen={onOpen} setReplyId={() => setReplyId(post.id)} />
+          <PostContent key={post.id} post={post} onOpen={onOpen} setReplyId={() => setReplyId(post.id)} />
         ))}
       </Grid>
-    </Pages>
+    </>
   );
 };
-
-export default Posts;

@@ -22,7 +22,7 @@ import { useAddCategory } from "./@common/categories.api";
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  btnRef: React.MutableRefObject<undefined>;
+  btnRef: React.MutableRefObject<HTMLButtonElement | null>;
 }
 
 export const CategoryDrawer = ({ btnRef, isOpen, onClose }: Props): ReactElement => {
@@ -59,16 +59,16 @@ export const CategoryDrawer = ({ btnRef, isOpen, onClose }: Props): ReactElement
             <DrawerHeader>Dodaj kategorię</DrawerHeader>
 
             <DrawerBody>
-              <FormControl isInvalid={errors.title} h="120">
+              <FormControl isInvalid={errors["title"]} h="120">
                 <FormLabel htmlFor="title">Tytuł</FormLabel>
                 <Input
                   title="title"
                   placeholder="Tytuł"
                   {...register("title", { required: "Pole nie może być puste" })}
                 />
-                <FormErrorMessage>{errors.title && errors.title.message}</FormErrorMessage>
+                <FormErrorMessage>{errors["title"] && errors["title"].message}</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={errors.description} h="120">
+              <FormControl isInvalid={errors["description"]} h="120">
                 <FormLabel htmlFor="description">Opis</FormLabel>
                 <Textarea
                   description="description"
@@ -76,7 +76,7 @@ export const CategoryDrawer = ({ btnRef, isOpen, onClose }: Props): ReactElement
                   placeholder="Tytuł"
                   {...register("description", { required: "Pole nie może być puste" })}
                 />
-                <FormErrorMessage>{errors.description && errors.description.message}</FormErrorMessage>
+                <FormErrorMessage>{errors["description"] && errors["description"].message}</FormErrorMessage>
               </FormControl>
             </DrawerBody>
 

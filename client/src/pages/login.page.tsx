@@ -5,7 +5,7 @@ import { apiRequest } from "../@common/@apiRequest";
 import { handleError } from "../@common/@handleError";
 import { LoadingPage } from "./@common/LoadingPage";
 
-export default function Login(): JSX.Element {
+export const LoginPage: React.FC = () => {
   const [emailSend, setEmailSend] = useState(false);
 
   const {
@@ -26,6 +26,7 @@ export default function Login(): JSX.Element {
     } catch (error) {
       console.error(error);
       handleError(error);
+      return <LoadingPage></LoadingPage>;
     }
   };
 
@@ -42,10 +43,10 @@ export default function Login(): JSX.Element {
     <Flex width="100wh" height="100vh">
       <Box margin="auto" width={300}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl id="email" isInvalid={errors.email} h="100px">
+          <FormControl id="email" isInvalid={errors["email"]} h="100px">
             <FormLabel>Email</FormLabel>
             <Input title="email" type="email" {...register("email", { required: "Please fill out this field" })} />
-            <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
+            <FormErrorMessage>{errors["email"] && errors["email"].message}</FormErrorMessage>
           </FormControl>
           {/* <FormControl id="password" isInvalid={errors.password} h="100px">
               <FormLabel>Password</FormLabel>
@@ -63,4 +64,4 @@ export default function Login(): JSX.Element {
       </Box>
     </Flex>
   );
-}
+};

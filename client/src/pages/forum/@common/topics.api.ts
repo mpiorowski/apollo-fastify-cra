@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { gql, useMutation, useQuery } from "urql";
 import { Topic } from "../../../../../@types/forum.types";
-import { handleGQLError } from "../../../@common/@handleError";
-import { GraphqlResponse } from "../../../@common/@types";
+import { handleError } from "../../../@common/@handleError";
+import { GraphqlMutation, GraphqlQuery } from "../../../@common/@types";
 
-export function useFindTopicById(topicId: string): GraphqlResponse<Topic> {
+export function useFindTopicById(topicId: string): GraphqlQuery<Topic> {
   const query = gql`
     query ($topicId: String!) {
       topic(id: $topicId) {
@@ -27,13 +27,13 @@ export function useFindTopicById(topicId: string): GraphqlResponse<Topic> {
   const [result, reexecuteQuery] = useQuery({ query, variables: { topicId }, pause: !topicId, context });
   const { data, fetching, error } = result;
   if (error) {
-    handleGQLError(error);
+    handleError(error);
   }
   const response = data?.topic || [];
   return { response, fetching, error, reexecuteQuery };
 }
 
-export const useAddTopic = (): GraphqlResponse<Topic> => {
+export const useAddTopic = (): GraphqlMutation<Topic> => {
   const query = gql`
     mutation ($categoryId: String!, $title: String!, $description: String!) {
       createTopic(categoryId: $categoryId, title: $title, description: $description) {

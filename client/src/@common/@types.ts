@@ -1,9 +1,15 @@
 import { CombinedError, OperationContext, OperationResult } from "urql";
 
-export type GraphqlResponse<T> = {
+export type GraphqlQuery<T> = {
   response: T;
   fetching: boolean;
-  error: CombinedError;
-  mutate?: (variables?: T, context?: Partial<OperationContext>) => Promise<OperationResult>;
-  reexecuteQuery?: () => void;
+  error?: CombinedError;
+  reexecuteQuery: () => void;
+};
+
+export type GraphqlMutation<T> = {
+  response: T;
+  fetching: boolean;
+  error?: CombinedError;
+  mutate: (variables?: T, context?: Partial<OperationContext>) => Promise<OperationResult>;
 };
