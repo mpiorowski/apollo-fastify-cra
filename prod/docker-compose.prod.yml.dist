@@ -27,7 +27,7 @@ services:
       - "5432:5432"
     volumes:
       - ../db/prod:/data/pgdata
-    restart: on-failure:3
+    restart: unless-stopped
 
   server:
     container_name: server-prod
@@ -39,7 +39,7 @@ services:
     depends_on:
       - db
     command: sh -c "echo 'starting server' && yarn run prod"
-    restart: on-failure:3
+    restart: unless-stopped
 
   client:
     container_name: client-prod
@@ -48,21 +48,11 @@ services:
       dockerfile: ./prod/Dockerfile.client
     environment:
       - "NODE_ENV=production"
-    depends_on:
-      - db
-      - server
-    command: sh -c "echo 'starting client' && yarn start"
-    restart: on-failure:3
-
-  nginx:
-    image: nginx:alpine
-    container_name: nginx-prod
     volumes:
       - ./nginx.prod.conf:/etc/nginx/conf.d/default.conf
       - /etc/letsencrypt:/etc/letsencrypt
-    ports:
-      - "80:80"
-      - "443:443"
     depends_on:
-      - client
-    restart: on-failure:3
+      - db
+      - server
+    command: sh -c "echo 'starting client' && nginx -g 'daemon off;'"
+    restart: unless-stopped
