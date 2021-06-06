@@ -77,7 +77,7 @@ export const App: React.FC = () => {
     <Grid gridTemplateColumns="60px 1fr" h="100vh">
       <Box backgroundColor="gray.900">
         <Tooltip label="Home" aria-label="home-tooltip" placement="right" shouldWrapChildren>
-          <Link to="/">
+          <Link to="/" aria-label="home">
             <Center
               h="40px"
               _hover={{ color: "gray.400", cursor: "pointer" }}
@@ -90,7 +90,7 @@ export const App: React.FC = () => {
           </Link>
         </Tooltip>
         <Tooltip label="Forum" aria-label="forum-tooltip" placement="right" shouldWrapChildren>
-          <Link to="/forum/categories">
+          <Link to="/forum/categories" aria-label="forum">
             <Center
               h="40px"
               _hover={{ color: "gray.400", cursor: "pointer" }}
@@ -103,7 +103,7 @@ export const App: React.FC = () => {
           </Link>
         </Tooltip>
         <Tooltip label="Chat" aria-label="chat-tooltip" placement="right" shouldWrapChildren>
-          <Link to="/chat">
+          <Link to="/chat" aria-label="chat">
             <Center
               h="40px"
               _hover={{ color: "gray.400", cursor: "pointer" }}
