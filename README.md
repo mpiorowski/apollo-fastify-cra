@@ -1,4 +1,4 @@
-# apollo-fastify-graphql
+# apollo-fastify-cra
 
 ### Simple forum with live chat application using:
 
