@@ -1,18 +1,21 @@
-# cra-fastify-graphql
+# apollo-fastify-graphql
 
 ### Simple forum with live chat application using:
 
 - fastify
 - cra
-- graphql
-- apollo ws
+- apollo graphql with ws
 - postgres
 - docker
 
 # Deploy
 
 ```
-sh start-db.sh # run docker database and migration
+sh start-db.sh # run docker database
+```
+Give it one second to start and then run:
+```
+sh start-migrate.sh # run migration
 ```
 
 Run this two commands in two terminals:
