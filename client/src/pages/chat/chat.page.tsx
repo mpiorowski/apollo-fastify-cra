@@ -14,6 +14,7 @@ import {
   Textarea,
   useDisclosure,
 } from "@chakra-ui/react";
+import { CombinedError } from "@urql/core";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Chat } from "../../../../@types/chat.types";
@@ -50,7 +51,7 @@ export const ChatPage: React.FC = () => {
       reset();
     } catch (error) {
       console.error(error);
-      handleError(error);
+      handleError(error as CombinedError);
     }
   };
 

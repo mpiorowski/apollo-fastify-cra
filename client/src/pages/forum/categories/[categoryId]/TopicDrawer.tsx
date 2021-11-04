@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { CombinedError } from "urql";
 import { Topic } from "../../../../../../@types/forum.types";
 import { handleError } from "../../../../@common/@handleError";
 import { useAddTopic } from "../../@common/topics.api";
@@ -43,7 +44,7 @@ export const TopicDrawer: React.FC<Props> = ({ categoryId, btnRef, isOpen, onClo
       }
       onClose();
     } catch (error) {
-      handleError(error);
+      handleError(error as CombinedError);
       console.error(error);
     }
   };

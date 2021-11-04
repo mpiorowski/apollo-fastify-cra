@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { CombinedError } from "urql";
 import { Post } from "../../../../../../../../@types/forum.types";
 import { handleError } from "../../../../../../@common/@handleError";
 import { useAddPost } from "../../../../@common/posts.api";
@@ -51,7 +52,7 @@ export const PostDrawer: React.FC<Props> = ({ topicId, btnRef, isOpen, onClose, 
       onClose();
     } catch (error) {
       console.error(error);
-      handleError(error);
+      handleError(error as CombinedError);
     }
   };
 

@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import React, { ReactElement } from "react";
 import { useForm } from "react-hook-form";
+import { CombinedError } from "urql";
 import { Category } from "../../../../@types/forum.types";
 import { handleError } from "../../@common/@handleError";
 import { useAddCategory } from "./@common/categories.api";
@@ -45,7 +46,7 @@ export const CategoryDrawer = ({ btnRef, isOpen, onClose }: Props): ReactElement
       reset();
     } catch (error) {
       console.error(error);
-      handleError(error);
+      handleError(error as CombinedError);
     }
   };
 

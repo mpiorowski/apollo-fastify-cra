@@ -1,6 +1,7 @@
 import { Box, Button, Flex, FormControl, FormErrorMessage, FormLabel, Input } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { CombinedError } from "urql";
 import { apiRequest } from "../@common/@apiRequest";
 import { handleError } from "../@common/@handleError";
 import { LoadingPage } from "./@common/LoadingPage";
@@ -21,11 +22,15 @@ export const LoginPage: React.FC = () => {
         method: "POST",
         body: JSON.stringify(values),
       });
-      setEmailSend(true);
+      if (process.env["NODE_ENV"] === "development") {
+        window.location.reload();
+      } else {
+        setEmailSend(true);
+      }
       return <LoadingPage></LoadingPage>;
     } catch (error) {
       console.error(error);
-      handleError(error);
+      handleError(error as CombinedError);
       return <LoadingPage></LoadingPage>;
     }
   };
