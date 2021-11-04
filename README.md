@@ -12,20 +12,17 @@
 # Deploy
 
 ```
-# run docker database and migration
-sh start-db.sh
+sh start-db.sh # run docker database and migration
 ```
 
 Run this two commands in two terminals:
 
 ```
-# run backend
-sh start-back.sh
+sh start-back.sh # run backend
 ```
 
 ```
-# run frontend
-sh start-front.sh
+sh start-front.sh # run frontend
 ```
 access: `localhost:3000`  
 On development env user is created without authorization, just write your email.  
